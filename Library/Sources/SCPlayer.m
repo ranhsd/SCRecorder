@@ -124,7 +124,7 @@ static char* LoadedTimeRanges = "LoadedTimeRanges";
             dispatch_async(dispatch_get_main_queue(), block);
         }
     } else if (context == LoadedTimeRanges) {
-        void (^block)() = ^{
+        void (^block)(void) = ^{
             id<SCPlayerDelegate> delegate = self.delegate;
             
             if ([delegate respondsToSelector:@selector(player:didUpdateLoadedTimeRanges:)]) {
@@ -139,7 +139,7 @@ static char* LoadedTimeRanges = "LoadedTimeRanges";
             dispatch_async(dispatch_get_main_queue(), block);
         }
     } else if (context == PlaybackBufferEmpty) {
-        void (^block)() = ^{
+        void (^block)(void) = ^{
             id<SCPlayerDelegate> delegate = self.delegate;
             
             if ([delegate respondsToSelector:@selector(player:itemPlaybackBufferIsEmpty:)]) {

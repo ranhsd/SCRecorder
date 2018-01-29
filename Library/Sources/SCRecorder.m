@@ -34,7 +34,7 @@
     double _lastAppendedVideoTime;
     NSTimer *_movieOutputProgressTimer;
     CMTime _lastMovieFileOutputTime;
-    void(^_pauseCompletionHandler)();
+    void(^_pauseCompletionHandler)(void);
     SCFilter *_transformFilter;
     size_t _transformFilterBufferWidth;
     size_t _transformFilterBufferHeight;
@@ -452,7 +452,7 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
 }
 
 - (void)record {
-    void (^block)() = ^{
+    void (^block)(void) = ^{
         _isRecording = YES;
         if (_movieOutput != nil && _session != nil) {
             _movieOutput.maxRecordedDuration = self.maxRecordDuration;
@@ -474,10 +474,10 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
     [self pause:nil];
 }
 
-- (void)pause:(void(^)())completionHandler {
+- (void)pause:(void(^)(void))completionHandler {
     _isRecording = NO;
     
-    void (^block)() = ^{
+    void (^block)(void) = ^{
         SCRecordSession *recordSession = _session;
         
         if (recordSession != nil) {
@@ -670,7 +670,7 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
         }
         
         [_session appendRecordSegmentUrl:outputFileURL info:[self _createSegmentInfo] error:actualError completionHandler:^(SCRecordSessionSegment *segment, NSError *error) {
-            void (^pauseCompletionHandler)() = _pauseCompletionHandler;
+            void (^pauseCompletionHandler)(void) = _pauseCompletionHandler;
             _pauseCompletionHandler = nil;
             
             SCRecordSession *recordSession = _session;
